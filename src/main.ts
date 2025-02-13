@@ -14,7 +14,7 @@ async function bootstrap() {
     origin: [
       'http://localhost:5173',  // Tu frontend local
       'http://localhost:3001',  // Otros posibles orígenes
-      'https://frontend-empleados-theta.vercel.app/' // Frontend en producción
+      'https://frontend-empleados-theta.vercel.app' // Frontend en producción
       
     ],
     // Métodos HTTP permitidos
