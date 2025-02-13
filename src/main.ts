@@ -5,27 +5,30 @@ import { ConfigService } from '@nestjs/config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
-  const origin = [
+  const allowedOrigins = [
     'http://localhost:5173',  // Tu frontend local
     'http://localhost:3001',  // Otros posibles orígenes
-    'https://frontend-empleados-theta.vercel.app' // Frontend en producción
-      
+    'https://frontend-empleados-theta.vercel.app', // Frontend en producción
+    'https://frontend-empleados-git-main-kanracodes-projects.vercel.app',
+    'https://frontend-empleados-kanracodes-projects.vercel.app' 
   ]
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
   const port = configService.get<number>('PORT') || 3000;
   // Configuración de CORS
   app.enableCors({
-    // Orígenes permitidos - en desarrollo podrías tener varios orígenes
-    origin: origin,
-      
-    // Métodos HTTP permitidos
+    origin: (origin, callback) => {
+      // Permite solicitudes sin origin (por ejemplo, desde herramientas como Postman)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        return callback(new Error('No permitido por CORS'));
+      }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-    // Cabeceras permitidas
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-    // Permitir enviar cookies o credenciales
     credentials: true,
-    // Tiempo que se guarda en caché la respuesta de preflight
     preflightContinue: false,
     optionsSuccessStatus: 204
   });
@@ -47,7 +50,7 @@ async function bootstrap() {
   });
 
   await app.listen(port);
-  Logger.log(`Fuentes disponibles${origin}`);
+  Logger.log(`Fuentes disponibles${allowedOrigins}`);
 }
 
 bootstrap();
