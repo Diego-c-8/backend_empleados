@@ -5,18 +5,20 @@ import { ConfigService } from '@nestjs/config';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 async function bootstrap() {
+  const origin = [
+    'http://localhost:5173',  // Tu frontend local
+    'http://localhost:3001',  // Otros posibles orígenes
+    'https://frontend-empleados-theta.vercel.app' // Frontend en producción
+      
+  ]
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
   const port = configService.get<number>('PORT') || 3000;
   // Configuración de CORS
   app.enableCors({
     // Orígenes permitidos - en desarrollo podrías tener varios orígenes
-    origin: [
-      'http://localhost:5173',  // Tu frontend local
-      'http://localhost:3001',  // Otros posibles orígenes
-      'https://frontend-empleados-theta.vercel.app' // Frontend en producción
+    origin: origin,
       
-    ],
     // Métodos HTTP permitidos
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     // Cabeceras permitidas
