@@ -12,8 +12,10 @@ async function bootstrap() {
   app.enableCors({
     // Orígenes permitidos - en desarrollo podrías tener varios orígenes
     origin: [
-      'http://localhost:5173',  // Tu frontend en Vite
+      'http://localhost:5173',  // Tu frontend local
       'http://localhost:3001',  // Otros posibles orígenes
+      'https://frontend-empleados-theta.vercel.app/' // Frontend en producción
+      
     ],
     // Métodos HTTP permitidos
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
