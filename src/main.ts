@@ -18,32 +18,34 @@ async function bootstrap() {
   // Configuración de CORS
 
   
-  // app.enableCors({
-  //   origin: (origin, callback) => {
-  //     console.log('Origin:', origin);
-  //     if (!origin) return callback(null, true);
-  //     if (allowedOrigins.includes(origin)) {
-  //       return callback(null, true);
-  //     } else {
-  //       return callback(new Error('No permitido por CORS'));
-  //     }
-  //   },
-  //   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
-  //   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-  //   credentials: true,
-  //   preflightContinue: false,
-  //   optionsSuccessStatus: 204
-  // });
-
-
   app.enableCors({
-    origin: true,
+    origin: (origin, callback) => {
+      console.log('Solicitud CORS desde el origin:', origin); // Log para ver el origin recibido
+      // Permite solicitudes sin origin (por ejemplo, desde Postman)
+      if (!origin) return callback(null, true);
+      if (allowedOrigins.includes(origin)) {
+        return callback(null, true);
+      } else {
+        console.error(`Origin no permitido: ${origin}`);
+        return callback(new Error('No permitido por CORS'));
+      }
+    },
     methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
     allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
     credentials: true,
     preflightContinue: false,
     optionsSuccessStatus: 204
-  }); //allow all origins to see if it works
+  });
+
+
+  // app.enableCors({
+  //   origin: true,
+  //   methods: ['GET', 'POST', 'PUT', 'DELETE', 'PATCH', 'OPTIONS'],
+  //   allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  //   credentials: true,
+  //   preflightContinue: false,
+  //   optionsSuccessStatus: 204
+  // }); //allow all origins to see if it works
   
   await app.init();
 
