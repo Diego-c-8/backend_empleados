@@ -10,8 +10,9 @@ async function bootstrap() {
     'http://localhost:3001',  // Otros posibles orígenes
     'https://frontend-empleados-theta.vercel.app', // Frontend en producción
     'https://frontend-empleados-git-main-kanracodes-projects.vercel.app',
-    'https://frontend-empleados-kanracodes-projects.vercel.app' 
-  ]
+    'https://frontend-empleados-kanracodes-projects.vercel.app',
+    'https://frontend-empleados-iota.vercel.app' // Agregado el nuevo dominio
+  ];
   const app = await NestFactory.create(AppModule);
   const configService = app.get(ConfigService);
   const port = configService.get<number>('PORT') || 3000;
